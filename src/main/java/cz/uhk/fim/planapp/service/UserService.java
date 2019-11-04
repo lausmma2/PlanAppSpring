@@ -16,8 +16,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public UserDto getUserById(Integer userId){
+        User user = userRepository.findUserByUserId(userId);
+        UserDto userDto = new UserDto();
+
+        userDto.setFirstName(user.getFirstname());
+        userDto.setLastName(user.getLastname());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setPhone(user.getPhone());
+        userDto.setCreatedOn(user.getCreatedOn());
+
+        return userDto;
+    }
+
     @Transactional
-    public List<UserDto> getAllUsersBySchoolId(){
+    public List<UserDto> getAllUsers(){
         List<User> users = userRepository.findAll();
         List<UserDto> userDtos = new ArrayList<>();
 

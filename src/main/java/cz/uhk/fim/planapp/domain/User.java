@@ -1,6 +1,7 @@
 package cz.uhk.fim.planapp.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.Set;
 
@@ -12,20 +13,40 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer userId;
 
+    @Column(length = 10, nullable = false)
+    private String visibleId;
+
+    @NotBlank(message = "Username is required")
+    @Column(length = 50, nullable = false)
+    private String username;
+
+    @NotBlank(message = "Firstname is required")
     @Column(length = 50, nullable = false)
     private String firstname;
 
+    @NotBlank(message = "Lastname is required")
     @Column(length = 50, nullable = false)
     private String lastname;
 
+    @NotBlank(message = "Password is required")
     @Column(length = 50, nullable = false)
     private String password;
 
+    @NotBlank(message = "E-mail is required")
     @Column(length = 50, unique = true, nullable = false)
     private String email;
 
     @Column(length = 20)
     private String phone;
+
+    @Column(length = 20)
+    private String country;
+
+    @Column(length = 200)
+    private String aboutMe;
+
+    @Column(nullable = false)
+    private Boolean isConfirmed = false;
 
     @Lob
     private byte[] photo;
@@ -37,7 +58,7 @@ public class User {
     private Date createdOn;
 
     @ManyToOne
-    @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"), nullable = false)
+    @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"))
     private Permission permission;
 
     @ManyToMany
@@ -99,6 +120,14 @@ public class User {
         this.phone = phone;
     }
 
+    public Boolean getConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        isConfirmed = confirmed;
+    }
+
     public byte[] getPhoto() {
         return photo;
     }
@@ -135,6 +164,10 @@ public class User {
         return tripGroup;
     }
 
+    public void setTripGroup(Set<TripGroup> tripGroup) {
+        this.tripGroup = tripGroup;
+    }
+
     public void setGroup(Set<TripGroup> tripGroup) {
         this.tripGroup = tripGroup;
     }
@@ -153,5 +186,37 @@ public class User {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public String getVisibleId() {
+        return visibleId;
+    }
+
+    public void setVisibleId(String visibleId) {
+        this.visibleId = visibleId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

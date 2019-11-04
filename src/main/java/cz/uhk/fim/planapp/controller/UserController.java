@@ -1,34 +1,38 @@
 package cz.uhk.fim.planapp.controller;
 
+import cz.uhk.fim.planapp.domain.User;
 import cz.uhk.fim.planapp.dto.UserDto;
-import cz.uhk.fim.planapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+        import cz.uhk.fim.planapp.service.UserService;
+        import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.OPTIONS;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-@RestController
+@RestController //vrací JSON v metodách
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/user")
     public List<UserDto> showUsers() {
-        List<UserDto> users = userService.getAllUsersBySchoolId();
-
+        List<UserDto> users = userService.getAllUsers();
         return users;
+    }
+
+    @RequestMapping(value = "/admin/user-page", method = RequestMethod.GET)
+    public UserDto showUser(){
+        UserDto user = userService.getUserById(1);
+        return user;
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserByUserId(@PathVariable Integer userId, BindingResult result){
+        UserDto userDto = userService.getUserById(userId);
+        return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     }
 }

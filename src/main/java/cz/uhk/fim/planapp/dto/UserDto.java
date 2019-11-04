@@ -10,9 +10,14 @@ public class UserDto {
     private String password;
     private String newPassword;
     private String confirmPassword;
+    private Boolean isConfirmed;
     private String email;
     private String phone;
     private Date createdOn;
+    private String userName;
+    private String country;
+    private String aboutMe;
+    private Integer visibleId;
 
     public Integer getUserId() {
         return userId;
@@ -84,5 +89,49 @@ public class UserDto {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Boolean isConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        isConfirmed = confirmed;
+    }
+
+    public Boolean getConfirmed() {
+        return isConfirmed;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public Integer getVisibleId() {
+        return visibleId;
+    }
+
+    public void setVisibleId(Integer visibleId) {
+        this.visibleId = visibleId;
     }
 }
