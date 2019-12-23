@@ -1,5 +1,6 @@
 package cz.uhk.fim.planapp.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserDto {
@@ -13,7 +14,7 @@ public class UserDto {
     private Boolean isConfirmed;
     private String email;
     private String phone;
-    private Date createdOn;
+    private LocalDateTime createdOn;
     private String userName;
     private String country;
     private String aboutMe;
@@ -83,11 +84,11 @@ public class UserDto {
         this.phone = phone;
     }
 
-    public Date getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Date createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 

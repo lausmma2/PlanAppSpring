@@ -1,7 +1,10 @@
 package cz.uhk.fim.planapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,29 +13,25 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
-    @Column(length = 10, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 10)
     private String visibleId;
 
-    @NotBlank(message = "Username is required")
-    @Column(length = 50, nullable = false)
+    @Column(length = 30, nullable = false)
     private String username;
 
-    @NotBlank(message = "Firstname is required")
-    @Column(length = 50, nullable = false)
+    @Column(length = 30, nullable = false)
     private String firstname;
 
-    @NotBlank(message = "Lastname is required")
-    @Column(length = 50, nullable = false)
+    @Column(length = 30, nullable = false)
     private String lastname;
 
-    @NotBlank(message = "Password is required")
     @Column(length = 50, nullable = false)
     private String password;
 
-    @NotBlank(message = "E-mail is required")
     @Column(length = 50, unique = true, nullable = false)
     private String email;
 
@@ -54,8 +53,8 @@ public class User {
     @Column(length = 50)
     private String authKey;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdOn;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime createdOn;
 
     @ManyToOne
     @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"))
@@ -144,11 +143,11 @@ public class User {
         this.authKey = authKey;
     }
 
-    public Date getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Date createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 

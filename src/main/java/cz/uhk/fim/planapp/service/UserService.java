@@ -32,8 +32,8 @@ public class UserService {
 
     @Transactional
     public List<UserDto> getAllUsers(){
-        List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = new ArrayList<>();
+        /*List<User> users = userRepository.findAll();
+
 
         for(User user: users){
             UserDto userDto = new UserDto();
@@ -43,8 +43,8 @@ public class UserService {
             userDto.setEmail(user.getEmail());
 
             userDtos.add(userDto);
-        }
-
+        }*/
+        List<UserDto> userDtos = new ArrayList<>();
         return userDtos;
     }
 }
