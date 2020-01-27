@@ -1,46 +1,54 @@
 package cz.uhk.fim.planapp.controller;
 
-import cz.uhk.fim.planapp.domain.User;
-import cz.uhk.fim.planapp.service.LoginService;
+import cz.uhk.fim.planapp.payload.JWTLoginSuccessResponse;
+import cz.uhk.fim.planapp.payload.LoginRequest;
+import cz.uhk.fim.planapp.security.JwtTokenProvider;
+import cz.uhk.fim.planapp.service.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
-import java.util.Base64;
-import java.util.Objects;
+import javax.validation.Valid;
+import javax.xml.ws.Response;
+
+import static cz.uhk.fim.planapp.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 public class LoginController {
 
     @Autowired
-    private LoginService loginService;
+    private JwtTokenProvider jwtTokenProvider;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ResponseEntity<?> loginUser(@PathParam("email") String email, @PathParam("password") String password, HttpSession session, RedirectAttributes attributes) {
-        User user = loginService.validUser(email, password);
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-        if (Objects.isNull(user)) {
-            attributes.addFlashAttribute("error", "error");
-            System.out.println("User not found...");
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
 
-            return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
-        } else {
-            session.setAttribute("user", user);
-            System.out.println("Logged in :) ");
-            /*if (!Objects.isNull(user.getPhone())){
-                byte[] encoded = Base64.getEncoder().encode(user.getPhoto());
-                session.setAttribute("image", new String(encoded));
-            }*/
-            return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null){
+            return errorMap;
         }
 
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
     }
 }

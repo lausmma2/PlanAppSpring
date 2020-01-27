@@ -4,6 +4,7 @@ import cz.uhk.fim.planapp.domain.User;
 import cz.uhk.fim.planapp.dto.UserDto;
 import cz.uhk.fim.planapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,28 +23,16 @@ public class UserService {
 
         userDto.setFirstName(user.getFirstname());
         userDto.setLastName(user.getLastname());
-        userDto.setEmail(user.getEmail());
+        userDto.setEmail(user.getUsername());
         userDto.setPassword(user.getPassword());
         userDto.setPhone(user.getPhone());
-        userDto.setCreatedOn(user.getCreatedOn());
+        userDto.setCreatedOn(user.getCreated_On());
 
         return userDto;
     }
 
     @Transactional
     public List<UserDto> getAllUsers(){
-        /*List<User> users = userRepository.findAll();
-
-
-        for(User user: users){
-            UserDto userDto = new UserDto();
-            userDto.setUserId(user.getUserId());
-            userDto.setFirstName(user.getFirstname());
-            userDto.setLastName(user.getLastname());
-            userDto.setEmail(user.getEmail());
-
-            userDtos.add(userDto);
-        }*/
         List<UserDto> userDtos = new ArrayList<>();
         return userDtos;
     }

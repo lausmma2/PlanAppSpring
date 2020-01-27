@@ -11,8 +11,8 @@ public class LoginService {
     @Autowired
     private UserRepository userRepository;
 
-    public User validUser(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+    public User validUser(String email) {
+        return userRepository.findByUsername(email);
     }
 
 

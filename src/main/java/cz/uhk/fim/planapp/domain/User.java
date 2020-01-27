@@ -1,16 +1,20 @@
 package cz.uhk.fim.planapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
-@Entity // This tells Hibernate to make a table out of this class
-@Table(name = "USER")
-public class User {
+@Entity
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,20 +24,22 @@ public class User {
     @Column(length = 10)
     private String visibleId;
 
-    @Column(length = 30, nullable = false)
-    private String username;
-
-    @Column(length = 30, nullable = false)
+    @NotBlank(message = "Firstname field is required")
     private String firstname;
 
-    @Column(length = 30, nullable = false)
+    @NotBlank(message = "Lastname field is required")
     private String lastname;
 
-    @Column(length = 50, nullable = false)
+    @NotBlank(message = "Password field is required")
     private String password;
 
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
+    @Transient
+    private String confirmPassword;
+
+    @Email(message = "Username has to be an email")
+    @NotBlank(message = "Username is required")
+    @Column(unique = true)
+    private String username;
 
     @Column(length = 20)
     private String phone;
@@ -54,7 +60,10 @@ public class User {
     private String authKey;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private LocalDateTime createdOn;
+    private LocalDateTime created_On;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime update_On;
 
     @ManyToOne
     @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"))
@@ -70,6 +79,36 @@ public class User {
 
     @Column(length = 6)
     private Integer points;
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -101,14 +140,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
@@ -143,15 +174,31 @@ public class User {
         this.authKey = authKey;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
+    public LocalDateTime getCreated_On() {
+        return created_On;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
+    public void setCreated_On(LocalDateTime created_On) {
+        this.created_On = created_On;
     }
 
-   public Permission getPermission() {
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public LocalDateTime getUpdate_On() {
+        return update_On;
+    }
+
+    public void setUpdate_On(LocalDateTime update_On) {
+        this.update_On = update_On;
+    }
+
+    public Permission getPermission() {
         return permission;
     }
 

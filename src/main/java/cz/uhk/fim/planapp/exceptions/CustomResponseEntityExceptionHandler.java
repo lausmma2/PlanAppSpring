@@ -13,12 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    public final ResponseEntity<Object> handleEmailExistsException(EmailExistsException ex, WebRequest request){
-        EmailExistsExceptionResponse emailExceptionResponse = new EmailExistsExceptionResponse(ex.getMessage());
-        return new ResponseEntity(emailExceptionResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
     public final ResponseEntity<Object> handleUsernameExistsException(UsernameExistsException ex, WebRequest request){
         UsernameExistsExceptionResponse userNameExceptionResponse = new UsernameExistsExceptionResponse(ex.getMessage());
         return new ResponseEntity(userNameExceptionResponse, HttpStatus.BAD_REQUEST);
