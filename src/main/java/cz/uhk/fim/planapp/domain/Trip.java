@@ -1,6 +1,11 @@
 package cz.uhk.fim.planapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -9,20 +14,27 @@ import java.util.Set;
 public class Trip {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer tripId;
 
-    @Column(length = 50, nullable = false)
+    @NotBlank(message = "Trip name is required")
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdOn;
+    @NotBlank(message = "Trip Identifier is required")
+    @Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
+    @Column(updatable = false, unique = true)
+    private String tripIdentifier;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateFrom;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date start_date;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date end_date;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTo;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(updatable = false)
+    private Date created_at;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_at;
 
     @Column(length = 6)
     private Integer kmCount;
@@ -31,12 +43,33 @@ public class Trip {
     @JoinColumn(name = "TRIP_PART", foreignKey = @ForeignKey(name = "FK_TRIP_TRIPPART"))
     private Set<TripPart> tripPart;
 
+    public Trip() {
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.created_at = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updated_at = new Date();
+    }
+
     public Integer getTripId() {
         return tripId;
     }
 
     public void setTripId(Integer tripId) {
         this.tripId = tripId;
+    }
+
+    public String getTripIdentifier() {
+        return tripIdentifier;
+    }
+
+    public void setTripIdentifier(String tripIdentifier) {
+        this.tripIdentifier = tripIdentifier;
     }
 
     public String getName() {
@@ -47,28 +80,36 @@ public class Trip {
         this.name = name;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
+    public Date getStart_date() {
+        return start_date;
     }
 
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
-    public Date getDateFrom() {
-        return dateFrom;
+    public Date getEnd_date() {
+        return end_date;
     }
 
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 
-    public Date getDateTo() {
-        return dateTo;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     public Integer getKmCount() {
