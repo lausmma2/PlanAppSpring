@@ -1,8 +1,11 @@
 package cz.uhk.fim.planapp.service;
 
 import cz.uhk.fim.planapp.domain.Trip;
+import cz.uhk.fim.planapp.domain.User;
 import cz.uhk.fim.planapp.exceptions.TripIdException;
+import cz.uhk.fim.planapp.exceptions.TripNotFoundException;
 import cz.uhk.fim.planapp.repository.TripRepository;
+import cz.uhk.fim.planapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +15,15 @@ public class TripService {
     @Autowired
     private TripRepository tripRepository;
 
-    public Trip saveOrUpdateTrip(Trip trip){
+    @Autowired
+    private UserRepository userRepository;
+
+    public Trip saveOrUpdateTrip(Trip trip, String username){
         try{
+            User user = userRepository.findByUsername(username);
+            trip.setUser(user);
+            trip.setTripCreator(user.getUsername());
+
             trip.setTripIdentifier(trip.getTripIdentifier().toUpperCase());
             return tripRepository.save(trip);
 
@@ -24,7 +34,20 @@ public class TripService {
         }
     }
 
-    public Iterable<Trip> findAllProjects(){
-        return tripRepository.findAll();
+    public Trip findTripByTripIdentifier(String tripIdentifier, String username){
+        Trip trip = tripRepository.findTripByTripIdentifier(tripIdentifier);
+
+        if(trip == null){
+            throw new TripIdException("Trip ID: '" + tripIdentifier + "' does not exist!");
+        }
+
+        if(!trip.getTripCreator().equals(username))
+            throw new TripNotFoundException("Project not found in your account");
+
+        return trip;
+    }
+
+    public Iterable<Trip> findAllProjects(String username){
+        return tripRepository.findAllByTripCreator(username);
     }
 }

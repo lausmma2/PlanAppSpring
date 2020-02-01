@@ -19,8 +19,14 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler
-    public final ResponseEntity<Object> handleProjectIdException(TripIdException ex, WebRequest request){
+    public final ResponseEntity<Object> handleTripIdException(TripIdException ex, WebRequest request){
         TripIdExceptionResponse exceptionResponse = new TripIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleTripNotFoundException(TripNotFoundException ex, WebRequest request){
+        TripNotFoundExceptionResponse exceptionResponse = new TripNotFoundExceptionResponse(ex.getMessage());
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

@@ -9,9 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class User implements UserDetails {
@@ -64,6 +62,9 @@ public class User implements UserDetails {
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime update_On;
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Trip> trips = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"))
@@ -196,6 +197,14 @@ public class User implements UserDetails {
 
     public void setUpdate_On(LocalDateTime update_On) {
         this.update_On = update_On;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 
     public Permission getPermission() {

@@ -1,6 +1,7 @@
 package cz.uhk.fim.planapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,8 @@ public class Trip {
     @Column(updatable = false, unique = true)
     private String tripIdentifier;
 
+    private String tripCreator;
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date start_date;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -38,6 +41,10 @@ public class Trip {
 
     @Column(length = 6)
     private Integer kmCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
 
     @OneToMany
     @JoinColumn(name = "TRIP_PART", foreignKey = @ForeignKey(name = "FK_TRIP_TRIPPART"))
@@ -64,6 +71,14 @@ public class Trip {
         this.tripId = tripId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getTripIdentifier() {
         return tripIdentifier;
     }
@@ -72,12 +87,12 @@ public class Trip {
         this.tripIdentifier = tripIdentifier;
     }
 
-    public String getName() {
-        return name;
+    public String getTripCreator() {
+        return tripCreator;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTripCreator(String tripCreator) {
+        this.tripCreator = tripCreator;
     }
 
     public Date getStart_date() {
@@ -118,6 +133,14 @@ public class Trip {
 
     public void setKmCount(Integer kmCount) {
         this.kmCount = kmCount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Set<TripPart> getTripPart() {
