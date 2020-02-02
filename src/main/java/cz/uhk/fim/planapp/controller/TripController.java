@@ -46,4 +46,11 @@ public class TripController {
     public Iterable<Trip> getAllTrips(Principal principal){
         return tripService.findAllProjects(principal.getName());
     }
+
+    @DeleteMapping("/{tripId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String tripId, Principal principal){
+        tripService.deleteTripByIdentifier(tripId, principal.getName());
+
+        return new ResponseEntity<String>("Trip with ID: '" + tripId + "' was deleted", HttpStatus.OK);
+    }
 }

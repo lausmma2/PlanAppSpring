@@ -47,6 +47,15 @@ public class TripService {
         return trip;
     }
 
+    public void deleteTripByIdentifier(String tripId, String username){
+        /*Trip trip = tripRepository.findTripByTripIdentifier(tripId.toUpperCase());
+
+        if(trip == null){
+            throw new TripIdException("Cannot delete trip with ID: '" + tripId + "'. This trip does not exist");
+        }*/
+        tripRepository.delete(findTripByTripIdentifier(tripId, username));
+    }
+
     public Iterable<Trip> findAllProjects(String username){
         return tripRepository.findAllByTripCreator(username);
     }
