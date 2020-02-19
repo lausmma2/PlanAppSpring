@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers(
                         "/login",
-                        "/registration",
+                        "/register",
                         "/confirm-account/**"
                 ).permitAll()
                 .antMatchers(H2_URL).permitAll()

@@ -1,8 +1,13 @@
 package cz.uhk.fim.planapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "TRIP_GROUP")
@@ -12,18 +17,32 @@ public class TripGroup {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer tripGroupId;
 
-    @Column(length = 50, nullable = false)
+    @NotBlank(message = "Trip Group name is required")
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdOn;
+    @NotBlank(message = "Trip Group Identifier is required")
+    @Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
+    @Column(updatable = false, unique = true)
+    private String tripGroupIdentifier;
+
+    private String tripGroupCreator;
 
     @Column(length = 200)
     private String description;
 
-    @OneToMany
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(updatable = false)
+    private Date created_at;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date updated_at;
+
+    /*@OneToMany
     @JoinColumn(name = "TRIP", foreignKey = @ForeignKey(name = "FK_GROUP_TRIP"))
-    private Set<Trip> trip;
+    @JsonIgnore
+    private Set<Trip> trip;*/
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Trip> trips = new ArrayList<>();
 
     public Integer getTripGroupId() {
         return tripGroupId;
@@ -41,12 +60,20 @@ public class TripGroup {
         this.name = name;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
+    public String getTripGroupIdentifier() {
+        return tripGroupIdentifier;
     }
 
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+    public void setTripGroupIdentifier(String tripGroupIdentifier) {
+        this.tripGroupIdentifier = tripGroupIdentifier;
+    }
+
+    public String getTripGroupCreator() {
+        return tripGroupCreator;
+    }
+
+    public void setTripGroupCreator(String tripGroupCreator) {
+        this.tripGroupCreator = tripGroupCreator;
     }
 
     public String getDescription() {
@@ -57,11 +84,27 @@ public class TripGroup {
         this.description = description;
     }
 
-    public Set<Trip> getTrip() {
-        return trip;
+    public List<Trip> getTrips() {
+        return trips;
     }
 
-    public void setTrip(Set<Trip> trip) {
-        this.trip = trip;
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 }

@@ -29,4 +29,34 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         TripNotFoundExceptionResponse exceptionResponse = new TripNotFoundExceptionResponse(ex.getMessage());
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest request){
+        UserNotFoundExceptionResponse exceptionResponse = new UserNotFoundExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleUserNotConfirmedException(UserNotConfirmedException ex, WebRequest request){
+        UserNotConfirmedExceptionResponse exceptionResponse = new UserNotConfirmedExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleFirstnameIsEmptyException(FirstnameIsEmptyException ex, WebRequest request){
+        FirstnameIsEmptyExceptionResponse exceptionResponse = new FirstnameIsEmptyExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleLastnameIsEmptyException(LastnameIsEmptyException ex, WebRequest request){
+        LastnameIsEmptyExceptionResponse exceptionResponse = new LastnameIsEmptyExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleTripGroupIdException(TripGroupIdException ex, WebRequest request){
+        TripGroupIdExceptionResponse exceptionResponse = new TripGroupIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }

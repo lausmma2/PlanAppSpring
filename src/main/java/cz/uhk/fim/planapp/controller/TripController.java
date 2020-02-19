@@ -23,7 +23,7 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/create-trip", method = RequestMethod.POST)
     public ResponseEntity<?> createNewTrip(@Valid @RequestBody Trip trip, BindingResult result, Principal principal){ //Principal je ze security package - person who is currently logged in
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
@@ -44,7 +44,7 @@ public class TripController {
 
     @GetMapping("/all")
     public Iterable<Trip> getAllTrips(Principal principal){
-        return tripService.findAllProjects(principal.getName());
+        return tripService.findAllTrips(principal.getName());
     }
 
     @DeleteMapping("/{tripId}")

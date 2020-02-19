@@ -9,13 +9,11 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String password;
-    private String newPassword;
     private String confirmPassword;
     private Boolean isConfirmed;
-    private String email;
     private String phone;
     private LocalDateTime createdOn;
-    private String userName;
+    private String username;
     private String country;
     private String aboutMe;
     private Integer visibleId;
@@ -52,28 +50,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
@@ -104,12 +86,12 @@ public class UserDto {
         return isConfirmed;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getCountry() {

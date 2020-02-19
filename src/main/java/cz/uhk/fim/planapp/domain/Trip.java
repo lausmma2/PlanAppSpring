@@ -28,6 +28,8 @@ public class Trip {
 
     private String tripCreator;
 
+    private String description;
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date start_date;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -41,6 +43,10 @@ public class Trip {
 
     @Column(length = 6)
     private Integer kmCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private TripGroup tripGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -95,6 +101,14 @@ public class Trip {
         this.tripCreator = tripCreator;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getStart_date() {
         return start_date;
     }
@@ -133,6 +147,14 @@ public class Trip {
 
     public void setKmCount(Integer kmCount) {
         this.kmCount = kmCount;
+    }
+
+    public TripGroup getTripGroup() {
+        return tripGroup;
+    }
+
+    public void setTripGroup(TripGroup tripGroup) {
+        this.tripGroup = tripGroup;
     }
 
     public User getUser() {

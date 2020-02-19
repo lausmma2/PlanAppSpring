@@ -1,7 +1,11 @@
 package cz.uhk.fim.planapp.controller;
 
+import cz.uhk.fim.planapp.domain.User;
+import cz.uhk.fim.planapp.exceptions.UserNotConfirmedException;
+import cz.uhk.fim.planapp.exceptions.UserNotFoundException;
 import cz.uhk.fim.planapp.payload.JWTLoginSuccessResponse;
 import cz.uhk.fim.planapp.payload.LoginRequest;
+import cz.uhk.fim.planapp.repository.UserRepository;
 import cz.uhk.fim.planapp.security.JwtTokenProvider;
 import cz.uhk.fim.planapp.service.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 import static cz.uhk.fim.planapp.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -32,14 +35,37 @@ public class LoginController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null){
             return errorMap;
         }
+        try {
+            String jwt = "";
+            User user = userRepository.findByUsername(loginRequest.getUsername());
+            if (user.getConfirmed()) {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginRequest.getUsername(),
+                                loginRequest.getPassword()
+                        )
+                );
 
-        Authentication authentication = authenticationManager.authenticate(
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
+            } else {
+                throw new UserNotConfirmedException("User has not been confirmed yet!");
+            }
+            return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
+        }catch (Exception ex){
+            throw new UserNotFoundException("Username or password is invalid! Or you haven't confirmed your account yet!");
+        }
+
+        /*Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword()
@@ -47,8 +73,6 @@ public class LoginController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
-
-        return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
+        String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);*/
     }
 }

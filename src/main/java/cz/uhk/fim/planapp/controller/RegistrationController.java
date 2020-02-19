@@ -32,7 +32,7 @@ public class RegistrationController {
         System.out.println("User has been confirmed :)");
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<?> loginUser(@Valid @RequestBody User user, BindingResult result) {
 
         userValidator.validate(user, result);

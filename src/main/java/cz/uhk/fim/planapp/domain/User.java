@@ -66,10 +66,6 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "PERMISSION", foreignKey = @ForeignKey(name = "FK_USER_PERMISSION"))
-    private Permission permission;
-
     @ManyToMany
     @JoinColumn(name = "GROUP", foreignKey = @ForeignKey(name = "FK_USER_GROUP"))
     private Set<TripGroup> tripGroup;
@@ -205,14 +201,6 @@ public class User implements UserDetails {
 
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
-    }
-
-    public Permission getPermission() {
-        return permission;
-    }
-
-    public void setPermission(Permission permission) {
-        this.permission = permission;
     }
 
     public Set<TripGroup> getTripGroup() {
