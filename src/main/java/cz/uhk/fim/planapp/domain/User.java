@@ -66,9 +66,19 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinColumn(name = "GROUP", foreignKey = @ForeignKey(name = "FK_USER_GROUP"))
-    private Set<TripGroup> tripGroup;
+    private Set<TripGroup> tripGroup;*/
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_trip_groups",
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "userId",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "tripGroup_id", referencedColumnName = "tripGroupId",
+                            nullable = false, updatable = false)})
+    private Set<TripGroup> tripGroups = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "GROUP_MEMBER", foreignKey = @ForeignKey(name = "FK_USER_GROUPMEMBER"))
@@ -203,7 +213,7 @@ public class User implements UserDetails {
         this.trips = trips;
     }
 
-    public Set<TripGroup> getTripGroup() {
+    /*public Set<TripGroup> getTripGroup() {
         return tripGroup;
     }
 
@@ -213,6 +223,14 @@ public class User implements UserDetails {
 
     public void setGroup(Set<TripGroup> tripGroup) {
         this.tripGroup = tripGroup;
+    }*/
+
+    public Set<TripGroup> getTripGroups() {
+        return tripGroups;
+    }
+
+    public void setTripGroups(Set<TripGroup> tripGroups) {
+        this.tripGroups = tripGroups;
     }
 
     public GroupMember getGroupMember() {

@@ -10,17 +10,20 @@ public class Place {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer placeId;
 
-    @Column(length = 50, nullable = false)
-    private String name;
+    @Column
+    private String title;
 
-    @Column(length = 200)
-    private String info;
+    @Column
+    private String latitude;
 
-    @Column(length = 50, nullable = false)
-    private String coordX;
+    @Column
+    private String longitude;
 
-    @Column(length = 50, nullable = false)
-    private String coordY;
+    @Column
+    private String vicinity;
+
+    @Column
+    private String distance;
 
     public Integer getPlaceId() {
         return placeId;
@@ -30,35 +33,43 @@ public class Place {
         this.placeId = placeId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getInfo() {
-        return info;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getCoordX() {
-        return coordX;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setCoordX(String coordX) {
-        this.coordX = coordX;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getCoordY() {
-        return coordY;
+    public String getVicinity() {
+        return vicinity;
     }
 
-    public void setCoordY(String coordY) {
-        this.coordY = coordY;
+    public void setVicinity(String vicinity) {
+        this.vicinity = vicinity;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }

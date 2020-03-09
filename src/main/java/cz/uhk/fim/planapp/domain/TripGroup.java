@@ -1,16 +1,15 @@
 package cz.uhk.fim.planapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
-@Table(name = "TRIP_GROUP")
+@Table(name = "tripGroups")
 public class TripGroup {
 
     @Id
@@ -35,6 +34,10 @@ public class TripGroup {
     private Date created_at;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
+
+    @ManyToMany(mappedBy = "tripGroups", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 
     /*@OneToMany
     @JoinColumn(name = "TRIP", foreignKey = @ForeignKey(name = "FK_GROUP_TRIP"))

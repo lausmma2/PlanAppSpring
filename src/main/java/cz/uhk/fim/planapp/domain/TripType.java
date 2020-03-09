@@ -13,6 +13,11 @@ public class TripType {
     @Column(length = 50, nullable = false)
     private String name;
 
+    @Column(updatable = false, unique = true)
+    private String tripTypeIdentifier;
+
+    private String description;
+
     public Integer getTripTypeId() {
         return tripTypeId;
     }
@@ -27,5 +32,21 @@ public class TripType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTripTypeIdentifier() {
+        return tripTypeIdentifier;
+    }
+
+    public void setTripTypeIdentifier(String tripTypeIdentifier) {
+        this.tripTypeIdentifier = tripTypeIdentifier;
     }
 }

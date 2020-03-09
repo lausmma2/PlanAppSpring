@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
@@ -12,4 +13,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User findByUsername(String username);
     User findUserByVisibleId(String visibleId);
     User getByUserId(Long id); //findByUserId se dá taky použít, ale je to Optional<>
+    Set<User> findUserByUsername(String username);
 }

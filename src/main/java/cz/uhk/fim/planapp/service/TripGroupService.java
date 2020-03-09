@@ -11,6 +11,8 @@ import cz.uhk.fim.planapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class TripGroupService {
 
@@ -65,5 +67,25 @@ public class TripGroupService {
                     tripGroup.getTripGroupIdentifier().toUpperCase() +
                     "' already exists");
         }
+    }
+
+    public Iterable<TripGroup> findAllTripGroups(String username){
+        return tripGroupRepository.findAllByTripGroupCreator(username);
+    }
+
+    public Iterable<TripGroup> findAllTripGroups(Set<User> user){
+        //return tripGroupRepository.findAll();
+        return tripGroupRepository.getAllByUsers(user);
+    }
+
+    public void deleteTripGroupByIdentifier(String tripGroupId, String username){
+        //TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupId);
+        //System.out.println(tripGroup.getTrips());
+        /*if(!tripGroup.getTrips().isEmpty()){
+            Trip trip = tripRepository.findTripByTripGroup(tripGroup);
+            trip.setTripGroup(null);
+        }*/
+
+        tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
     }
 }

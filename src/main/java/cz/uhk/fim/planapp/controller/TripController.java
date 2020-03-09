@@ -1,8 +1,10 @@
 package cz.uhk.fim.planapp.controller;
 
 import cz.uhk.fim.planapp.domain.Trip;
+import cz.uhk.fim.planapp.domain.TripType;
 import cz.uhk.fim.planapp.service.MapValidationErrorService;
 import cz.uhk.fim.planapp.service.TripService;
+import cz.uhk.fim.planapp.service.TripTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
+    @Autowired
+    private TripTypeService tripTypeService;
+
     @RequestMapping(value = "/create-trip", method = RequestMethod.POST)
     public ResponseEntity<?> createNewTrip(@Valid @RequestBody Trip trip, BindingResult result, Principal principal){ //Principal je ze security package - person who is currently logged in
 
@@ -32,7 +37,7 @@ public class TripController {
         }
 
         Trip trip1 = tripService.saveOrUpdateTrip(trip, principal.getName());
-        return new ResponseEntity<Trip>(trip, HttpStatus.CREATED);
+        return new ResponseEntity<Trip>(trip1, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{tripId}")
@@ -52,5 +57,16 @@ public class TripController {
         tripService.deleteTripByIdentifier(tripId, principal.getName());
 
         return new ResponseEntity<String>("Trip with ID: '" + tripId + "' was deleted", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/trip-type/{tripTypeId}")
+    public ResponseEntity<?> getTripTypeByIdentifier(@PathVariable String tripTypeId){
+        TripType tripType = tripTypeService.findTripTypeByTripIdentifier(tripTypeId);
+        return new ResponseEntity<TripType>(tripType, HttpStatus.OK);
+    }
+
+    @GetMapping("/trip-type/all")
+    public Iterable<TripType> getAllTripTypes(){
+        return tripTypeService.findAllTripTypes();
     }
 }
