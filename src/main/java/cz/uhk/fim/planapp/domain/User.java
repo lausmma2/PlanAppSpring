@@ -66,10 +66,6 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
-    /*@ManyToMany
-    @JoinColumn(name = "GROUP", foreignKey = @ForeignKey(name = "FK_USER_GROUP"))
-    private Set<TripGroup> tripGroup;*/
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_trip_groups",
             joinColumns = {

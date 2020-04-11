@@ -10,7 +10,7 @@ public interface TripRepository extends CrudRepository<Trip, Long> {
 
     Trip findTripByTripIdentifier(String tripIdentifier);
     Iterable<Trip> findAllByTripCreator(String username);
-    Trip findTripByTripGroup(TripGroup tripGroup);
+    Iterable<Trip> findAllByTripGroup(TripGroup tripGroup);
 
     @Override
     Iterable<Trip> findAll();

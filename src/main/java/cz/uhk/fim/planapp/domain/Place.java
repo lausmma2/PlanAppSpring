@@ -1,6 +1,7 @@
 package cz.uhk.fim.planapp.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "PLACE")
@@ -10,20 +11,20 @@ public class Place {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer placeId;
 
-    @Column
+    @NotBlank(message = "Place title is required")
     private String title;
 
-    @Column
-    private String latitude;
+    private Double latitude;
 
-    @Column
-    private String longitude;
+    private Double longitude;
 
-    @Column
-    private String vicinity;
-
-    @Column
+    @NotBlank(message = "Distance is required")
     private String distance;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Trip trip;
+
+    private String placeOwner;
 
     public Integer getPlaceId() {
         return placeId;
@@ -41,28 +42,20 @@ public class Place {
         this.title = title;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public String getVicinity() {
-        return vicinity;
-    }
-
-    public void setVicinity(String vicinity) {
-        this.vicinity = vicinity;
     }
 
     public String getDistance() {
@@ -71,5 +64,21 @@ public class Place {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public String getPlaceOwner() {
+        return placeOwner;
+    }
+
+    public void setPlaceOwner(String placeOwner) {
+        this.placeOwner = placeOwner;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 }

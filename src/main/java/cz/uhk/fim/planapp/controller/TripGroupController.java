@@ -70,7 +70,6 @@ public class TripGroupController {
 
     @GetMapping("/all")
     public Iterable<TripGroup> getAllTripGroups(Principal principal){
-        //return tripGroupService.findAllTripGroups(principal.getName());
         Set<User> user = userRepository.findUserByUsername(principal.getName());
         return  tripGroupService.findAllTripGroups(user);
     }
@@ -80,5 +79,12 @@ public class TripGroupController {
         tripGroupService.deleteTripGroupByIdentifier(tripGroupId, principal.getName());
 
         return new ResponseEntity<String>("Trip Group with ID: '" + tripGroupId + "' was deleted", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{tripGroupId}")
+    public ResponseEntity<?> getTripGroupById(@PathVariable String tripGroupId, Principal principal){
+        TripGroup tripGroup = tripGroupService.findTripGroupByTripGroupId(tripGroupId, principal.getName());
+
+        return new ResponseEntity<TripGroup>(tripGroup, HttpStatus.OK);
     }
 }

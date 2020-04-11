@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -54,6 +56,10 @@ public class Trip {
     @OneToMany
     @JoinColumn(name = "TRIP_PART", foreignKey = @ForeignKey(name = "FK_TRIP_TRIPPART"))
     private Set<TripPart> tripPart;
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "trip", orphanRemoval = true)
+    @JsonIgnore
+    private List<Place> places = new ArrayList<>();
 
     public Trip() {
     }
@@ -170,5 +176,13 @@ public class Trip {
 
     public void setTripPart(Set<TripPart> tripPart) {
         this.tripPart = tripPart;
+    }
+
+    public List<Place> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<Place> places) {
+        this.places = places;
     }
 }

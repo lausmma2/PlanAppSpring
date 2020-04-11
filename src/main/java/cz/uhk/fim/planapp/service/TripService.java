@@ -1,13 +1,19 @@
 package cz.uhk.fim.planapp.service;
 
 import cz.uhk.fim.planapp.domain.Trip;
+import cz.uhk.fim.planapp.domain.TripGroup;
 import cz.uhk.fim.planapp.domain.User;
+import cz.uhk.fim.planapp.exceptions.TripGroupIdException;
+import cz.uhk.fim.planapp.exceptions.TripGroupNotFoundException;
 import cz.uhk.fim.planapp.exceptions.TripIdException;
 import cz.uhk.fim.planapp.exceptions.TripNotFoundException;
+import cz.uhk.fim.planapp.repository.TripGroupRepository;
 import cz.uhk.fim.planapp.repository.TripRepository;
 import cz.uhk.fim.planapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
 
 @Service
 public class TripService {
@@ -18,9 +24,11 @@ public class TripService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TripGroupRepository tripGroupRepository;
+
     public Trip saveOrUpdateTrip(Trip trip, String username){
 
-        //Nechápu?
         if(trip.getTripId() != null){
             Trip existingTrip = tripRepository.findTripByTripIdentifier(trip.getTripIdentifier());
 
@@ -31,7 +39,6 @@ public class TripService {
             }
         }
         try{
-            // TODO: 03.02.2020 - Mrknout na backlog...
             // TODO: 03.02.2020 - Update nefunguje update_at... pořád null
             User user = userRepository.findByUsername(username);
             trip.setUser(user);
@@ -55,7 +62,7 @@ public class TripService {
         }
 
         if(!trip.getTripCreator().equals(username))
-            throw new TripNotFoundException("Project not found in your account");
+            throw new TripNotFoundException("Trip not found in your account");
 
         return trip;
     }
@@ -71,5 +78,42 @@ public class TripService {
 
     public Iterable<Trip> findAllTrips(String username){
         return tripRepository.findAllByTripCreator(username);
+    }
+
+    public Iterable<Trip> getAllTripsOfTripGroup(String tripGroupId, String username){
+        TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupId);
+        User user = userRepository.findByUsername(username);
+        Iterable<Trip> trips = null;
+
+        if(tripGroup == null){
+            throw new TripGroupIdException("TripGroup with ID: '" + tripGroupId + "' does not exist!");
+        }
+
+        for(Iterator<TripGroup> tripGroupsSet = user.getTripGroups().iterator(); tripGroupsSet.hasNext(); ){
+            TripGroup tripGroup1 = tripGroupsSet.next();
+            if(tripGroup1.equals(tripGroup) || !tripGroup.getTripGroupCreator().equals(username)){
+                trips = tripRepository.findAllByTripGroup(tripGroup1);
+            }
+        }
+        return trips;
+    }
+
+    public Trip findTripByTripIdentifierAndTripGroupIdentifier(String tripIdentifier, String tripGroupIdentifier, String username){
+        Trip trip = tripRepository.findTripByTripIdentifier(tripIdentifier);
+        TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupIdentifier);
+        User user = userRepository.findByUsername(username);
+        Trip trip1 = null;
+
+        for(Iterator<TripGroup> tripGroupsSet = user.getTripGroups().iterator(); tripGroupsSet.hasNext(); ){
+            TripGroup tripGroup1 = tripGroupsSet.next();
+            if(tripGroup1.equals(tripGroup)){
+                for (int i = 0; i < tripGroup.getTrips().size(); i++) {
+                    if(trip.equals(tripGroup.getTrips().get(i))){
+                        trip1 = trip;
+                    }
+                }
+            }
+        }
+        return trip1;
     }
 }

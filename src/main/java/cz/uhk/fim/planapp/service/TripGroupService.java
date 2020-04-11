@@ -4,6 +4,7 @@ import cz.uhk.fim.planapp.domain.Trip;
 import cz.uhk.fim.planapp.domain.TripGroup;
 import cz.uhk.fim.planapp.domain.User;
 import cz.uhk.fim.planapp.exceptions.TripGroupIdException;
+import cz.uhk.fim.planapp.exceptions.TripIdException;
 import cz.uhk.fim.planapp.exceptions.TripNotFoundException;
 import cz.uhk.fim.planapp.repository.TripGroupRepository;
 import cz.uhk.fim.planapp.repository.TripRepository;
@@ -29,7 +30,16 @@ public class TripGroupService {
     private TripRepository tripRepository;
 
     public TripGroup findTripGroupByTripGroupId(String tripGroupIdentifier, String username){
-        return tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupIdentifier);
+        TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupIdentifier);
+
+        if(tripGroup == null){
+            throw new TripIdException("TripGroup ID: '" + tripGroupIdentifier + "' does not exist!");
+        }
+
+        if(!tripGroup.getTripGroupCreator().equals(username))
+            throw new TripNotFoundException("TripGroup not found in your account");
+
+        return tripGroup;
     }
 
     public void setTripGroupToTrip(String tripGroupIdentifier, String username, String tripIdentifier){
@@ -69,23 +79,21 @@ public class TripGroupService {
         }
     }
 
-    public Iterable<TripGroup> findAllTripGroups(String username){
-        return tripGroupRepository.findAllByTripGroupCreator(username);
-    }
-
     public Iterable<TripGroup> findAllTripGroups(Set<User> user){
         //return tripGroupRepository.findAll();
         return tripGroupRepository.getAllByUsers(user);
     }
 
     public void deleteTripGroupByIdentifier(String tripGroupId, String username){
-        //TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupId);
-        //System.out.println(tripGroup.getTrips());
-        /*if(!tripGroup.getTrips().isEmpty()){
-            Trip trip = tripRepository.findTripByTripGroup(tripGroup);
-            trip.setTripGroup(null);
-        }*/
+        TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupId);
 
-        tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
+        if(!tripGroup.getTrips().isEmpty()) {
+            for (int i = 0; i < tripGroup.getTrips().size(); i++) {
+                tripGroup.getTrips().remove(i);
+            }
+            tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
+        }else{
+            tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
+        }
     }
 }

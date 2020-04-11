@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
-@Table(name = "tripGroups")
 public class TripGroup {
 
     @Id
@@ -39,12 +38,8 @@ public class TripGroup {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
-    /*@OneToMany
-    @JoinColumn(name = "TRIP", foreignKey = @ForeignKey(name = "FK_GROUP_TRIP"))
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "tripGroup", orphanRemoval = true)
     @JsonIgnore
-    private Set<Trip> trip;*/
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
     public Integer getTripGroupId() {

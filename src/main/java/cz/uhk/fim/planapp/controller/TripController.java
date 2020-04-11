@@ -69,4 +69,18 @@ public class TripController {
     public Iterable<TripType> getAllTripTypes(){
         return tripTypeService.findAllTripTypes();
     }
+
+    @RequestMapping(value = "/group/{tripGroupId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getAllTripsByTripGroup(@PathVariable String tripGroupId, Principal principal){
+        Iterable<Trip> trips = tripService.getAllTripsOfTripGroup(tripGroupId, principal.getName());
+        return new ResponseEntity<Iterable<Trip>>(trips, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{tripId}/{tripGroupId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getTripByTripIdentifierAndTripGroupIdentifier(@PathVariable String tripId,
+                                                                           @PathVariable String tripGroupId,
+                                                                           Principal principal){
+        Trip trip = tripService.findTripByTripIdentifierAndTripGroupIdentifier(tripId, tripGroupId, principal.getName());
+        return new ResponseEntity<Trip>(trip, HttpStatus.OK);
+    }
 }

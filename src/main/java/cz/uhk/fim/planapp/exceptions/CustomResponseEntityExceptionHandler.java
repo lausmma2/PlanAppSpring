@@ -59,4 +59,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         TripGroupIdExceptionResponse exceptionResponse = new TripGroupIdExceptionResponse(ex.getMessage());
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleTripGroupNotFoundException(TripGroupNotFoundException ex, WebRequest request){
+        TripGroupNotFoundExceptionResponse exceptionResponse = new TripGroupNotFoundExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }
