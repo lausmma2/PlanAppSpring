@@ -50,7 +50,7 @@ public class RegistrationController {
         googleMail.sendFromGMail(
                 "lausman.marek",
                 "nzmlvheusumnjivq", recipient,
-                "Registration confirmation - PLANAPP",
+                "Registration confirmation - PlanApp",
                 "Click the link below to activate your account on PlanApp! :)" + "\n http://localhost:8081/confirm-account/" + user.getVisibleId()
         );
 

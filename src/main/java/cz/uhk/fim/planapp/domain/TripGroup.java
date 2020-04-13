@@ -42,6 +42,14 @@ public class TripGroup {
     @JsonIgnore
     private List<Trip> trips = new ArrayList<>();
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     public Integer getTripGroupId() {
         return tripGroupId;
     }

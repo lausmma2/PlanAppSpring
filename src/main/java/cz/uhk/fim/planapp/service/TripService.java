@@ -50,7 +50,7 @@ public class TripService {
         }catch (Exception e){
             throw new TripIdException("Trip ID: '" +
                     trip.getTripIdentifier().toUpperCase() +
-                    "' already exists");
+                    "' is already taken by other user!");
         }
     }
 

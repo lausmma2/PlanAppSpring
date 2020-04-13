@@ -29,9 +29,6 @@ public class TripGroupController {
     private TripGroupService tripGroupService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @RequestMapping(value = "/create-trip-group", method = RequestMethod.POST)
@@ -59,13 +56,8 @@ public class TripGroupController {
 
     @RequestMapping(value = "/{tripGroupId}/{username}", method = RequestMethod.POST)
     public ResponseEntity<?> addUserToGroup(@PathVariable String tripGroupId, @PathVariable String username, Principal principal){
-        User user1 = userService.findUserByUsername(username);
-        TripGroup tripGroup1 = tripGroupService.findTripGroupByTripGroupId(tripGroupId, principal.getName());
-
-        user1.getTripGroups().add(tripGroup1);
-        userRepository.save(user1);
-
-        return new ResponseEntity<User>(user1, HttpStatus.OK);
+        tripGroupService.addUserToTripGroup(tripGroupId, username);
+        return new ResponseEntity<String>("Added", HttpStatus.OK);
     }
 
     @GetMapping("/all")

@@ -6,9 +6,11 @@ import cz.uhk.fim.planapp.domain.User;
 import cz.uhk.fim.planapp.exceptions.TripGroupIdException;
 import cz.uhk.fim.planapp.exceptions.TripIdException;
 import cz.uhk.fim.planapp.exceptions.TripNotFoundException;
+import cz.uhk.fim.planapp.exceptions.UserNotFoundException;
 import cz.uhk.fim.planapp.repository.TripGroupRepository;
 import cz.uhk.fim.planapp.repository.TripRepository;
 import cz.uhk.fim.planapp.repository.UserRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,10 +65,7 @@ public class TripGroupService {
             }
         }
         try{
-            // TODO: 03.02.2020 - Mrknout na backlog...
-            // TODO: 03.02.2020 - Update nefunguje update_at... pořád null
             User user = userRepository.findByUsername(username);
-            //tripGroup.setUser(user);
             tripGroup.setTripGroupCreator(user.getUsername());
             tripGroup.setTripGroupIdentifier(tripGroup.getTripGroupIdentifier().toUpperCase());
 
@@ -91,9 +90,30 @@ public class TripGroupService {
             for (int i = 0; i < tripGroup.getTrips().size(); i++) {
                 tripGroup.getTrips().remove(i);
             }
+            for(User user1: tripGroup.getUsers()){
+                user1.getTripGroups().remove(tripGroup);
+            }
             tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
         }else{
+            for(User user1: tripGroup.getUsers()){
+                user1.getTripGroups().remove(tripGroup);
+            }
             tripGroupRepository.delete(findTripGroupByTripGroupId(tripGroupId, username));
         }
+    }
+
+    public void addUserToTripGroup(String tripGroupId, String username){
+        TripGroup tripGroup = tripGroupRepository.findTripGroupByTripGroupIdentifier(tripGroupId);
+        User user = userRepository.findByUsername(username);
+
+        if(user == null){
+            throw new UserNotFoundException("User with username: " + "'" + username + "'" + " does not exist!");
+        }
+        if(tripGroup == null) {
+            throw new TripNotFoundException("TripGroup with ID: " + "'" + tripGroupId + "'" + " does not exist!");
+        }
+
+        user.getTripGroups().add(tripGroup);
+        userRepository.save(user);
     }
 }
