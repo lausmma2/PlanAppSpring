@@ -3,6 +3,7 @@ package cz.uhk.fim.planapp.controller;
 import cz.uhk.fim.planapp.common.GoogleMail;
 import cz.uhk.fim.planapp.domain.User;
 
+import cz.uhk.fim.planapp.security.JwtTokenProvider;
 import cz.uhk.fim.planapp.service.MapValidationErrorService;
 import cz.uhk.fim.planapp.service.RegisterService;
 import cz.uhk.fim.planapp.validator.UserValidator;
@@ -13,6 +14,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.UUID;
+
+import static cz.uhk.fim.planapp.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 public class RegistrationController {
@@ -26,9 +31,11 @@ public class RegistrationController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    @RequestMapping(value = "/confirm-account/{visibleId}", method = RequestMethod.GET)
-    public void confirmUser(@PathVariable Integer visibleId){
-        registerService.confirmUserByVisibleId(visibleId.toString());
+    @RequestMapping(value = "/confirm-account/{username}/{uuid}", method = RequestMethod.GET)
+    public void confirmUser(@PathVariable String username,
+                            @PathVariable String uuid){
+        //registerService.confirmUserByVisibleId(visibleId.toString());
+        registerService.confirmUserByUsername(username);
         System.out.println("User has been confirmed :)");
     }
 
@@ -42,7 +49,7 @@ public class RegistrationController {
             return errorMap;
         }
 
-        User newUser = registerService.saveOrUpdateUser(user);
+        String uniqueID = UUID.randomUUID().toString();
 
         //Confirmation e-mail sending
         String[] recipient = { user.getUsername() };
@@ -51,8 +58,10 @@ public class RegistrationController {
                 "lausman.marek",
                 "nzmlvheusumnjivq", recipient,
                 "Registration confirmation - PlanApp",
-                "Click the link below to activate your account on PlanApp! :)" + "\n http://localhost:8081/confirm-account/" + user.getVisibleId()
+                "Click the link below to activate your account on PlanApp! :)" + "\n http://localhost:8081/confirm-account/" + user.getUsername() + "/" + uniqueID/*user.getVisibleId()*/
         );
+
+        User newUser = registerService.saveOrUpdateUser(user);
 
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }

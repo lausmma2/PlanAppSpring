@@ -91,7 +91,7 @@ public class TripService {
 
         for(Iterator<TripGroup> tripGroupsSet = user.getTripGroups().iterator(); tripGroupsSet.hasNext(); ){
             TripGroup tripGroup1 = tripGroupsSet.next();
-            if(tripGroup1.equals(tripGroup) || !tripGroup.getTripGroupCreator().equals(username)){
+            if(tripGroup1.equals(tripGroup) /*|| !tripGroup.getTripGroupCreator().equals(username)*/){
                 trips = tripRepository.findAllByTripGroup(tripGroup1);
             }
         }

@@ -29,14 +29,17 @@ public class UserService {
     }
 
     public void updateUser(User userInDb, User updatedUser){
-        // TODO: 11.02.2020 Dodělat validaci... když pošlu třeba jen firstname, lastname, tak ostatní se nastaví na null... a když někdo smaže firstname, lastname = nullPointerException
-
-        //if(aboutMe = null)...
-        userInDb.setFirstname(updatedUser.getFirstname());
-        userInDb.setLastname(updatedUser.getLastname());
-        userInDb.setPhone(updatedUser.getPhone());
-        userInDb.setCountry(updatedUser.getCountry());
-        userInDb.setAboutMe(updatedUser.getAboutMe());
+        if((updatedUser.getFirstname().equals("") && updatedUser.getLastname().equals(""))
+                || updatedUser.getFirstname().equals("")
+                || updatedUser.getLastname().equals("")) {
+            throw new FirstnameIsEmptyException("Firstname or Lastname cannot be blank!");
+        }else{
+            userInDb.setFirstname(updatedUser.getFirstname());
+            userInDb.setLastname(updatedUser.getLastname());
+            userInDb.setPhone(updatedUser.getPhone());
+            userInDb.setCountry(updatedUser.getCountry());
+            userInDb.setAboutMe(updatedUser.getAboutMe());
+        }
 
         userRepository.save(userInDb);
     }

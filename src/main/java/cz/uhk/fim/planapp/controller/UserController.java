@@ -46,10 +46,4 @@ public class UserController {
         userService.updateUser(userInDb, updatedUser);
         return new ResponseEntity<User>(userInDb, HttpStatus.OK);
     }
-
-    /*@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadFile(@RequestParam MultipartFile file) {
-        logger.info(String.format("File name '%s' was uploaded successfully.", file.getOriginalFilename()));
-        return ResponseEntity.ok().build();
-    }*/
 }

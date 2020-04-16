@@ -24,14 +24,14 @@ public class RegisterService {
 
         try {
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-            //Username has to be unique (custom exception)
             newUser.setUsername(newUser.getUsername());
 
             //Make sure that password and confirmPassword match
             //We dont persist or show the confirmPassword
             newUser.setConfirmPassword("");
 
-            generateUsersVisibleId(newUser);
+            //generateUsersVisibleId(newUser);
+            //newUser.setConfirmed(true);
             setCreated_OnDate(newUser);
 
             return userRepository.save(newUser);
@@ -50,8 +50,27 @@ public class RegisterService {
 
     @Transactional
     public void generateUsersVisibleId(User user){
-        Long count = userRepository.count() + 100 + 913;
+        Long count = (userRepository.count() + 1) + 100 + 913;
         user.setVisibleId(count.toString());
+    }
+
+    @Transactional
+    public void confirmUserByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        System.out.println(user.getUsername());
+        user.setConfirmed(true);
+
+        /*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+        LocalDateTime tomorrow = user.getCreated_On().plusHours(24);
+        dtf.format(tomorrow);
+        LocalDateTime now = LocalDateTime.now();
+
+        if(now.isBefore(tomorrow)){
+            user.setConfirmed(true);
+            System.out.println("registered! :)");
+        }else {
+            System.out.println("User cannot be registered!");
+        }*/
     }
 
     @Transactional
