@@ -31,6 +31,7 @@ public class TripService {
 
         if(trip.getTripId() != null){
             Trip existingTrip = tripRepository.findTripByTripIdentifier(trip.getTripIdentifier());
+            trip.setTripGroup(existingTrip.getTripGroup());
 
             if(existingTrip != null && !existingTrip.getUser().getUsername().equals(username)){
                 throw new TripNotFoundException("Trip not found in your account!");
@@ -44,6 +45,7 @@ public class TripService {
             trip.setUser(user);
             trip.setTripCreator(user.getUsername());
             trip.setTripIdentifier(trip.getTripIdentifier().toUpperCase());
+            //trip.setTripGroup(trip.getTripGroup());
 
             return tripRepository.save(trip);
 
