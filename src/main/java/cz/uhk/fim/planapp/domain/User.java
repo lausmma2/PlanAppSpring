@@ -64,6 +64,7 @@ public class User implements UserDetails {
     private LocalDateTime update_On;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
     private List<Trip> trips = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
