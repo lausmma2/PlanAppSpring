@@ -47,6 +47,7 @@ public class Trip {
     private Integer kmCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private TripGroup tripGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
