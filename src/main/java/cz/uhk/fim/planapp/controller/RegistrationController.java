@@ -58,7 +58,7 @@ public class RegistrationController {
                 "lausman.marek",
                 "nzmlvheusumnjivq", recipient,
                 "Registration confirmation - PlanApp",
-                "Click the link below to activate your account on PlanApp! :)" + "\n http://localhost:8081/confirm-account/" + user.getUsername() + "/" + uniqueID/*user.getVisibleId()*/
+                "Click the link below to activate your account on PlanApp! :)" + "\n https://planapp-spring.herokuapp.com/confirm-account/" + user.getUsername() + "/" + uniqueID/*user.getVisibleId()*/
         );
 
         User newUser = registerService.saveOrUpdateUser(user);
