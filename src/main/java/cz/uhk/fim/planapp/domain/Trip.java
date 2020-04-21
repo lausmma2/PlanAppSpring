@@ -46,16 +46,12 @@ public class Trip {
     @Column(length = 6)
     private Integer kmCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private TripGroup tripGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
-
-    @OneToMany
-    @JoinColumn(name = "TRIP_PART", foreignKey = @ForeignKey(name = "FK_TRIP_TRIPPART"))
-    private Set<TripPart> tripPart;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "trip", orphanRemoval = true)
     @JsonIgnore
@@ -168,14 +164,6 @@ public class Trip {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Set<TripPart> getTripPart() {
-        return tripPart;
-    }
-
-    public void setTripPart(Set<TripPart> tripPart) {
-        this.tripPart = tripPart;
     }
 
     public List<Place> getPlaces() {
