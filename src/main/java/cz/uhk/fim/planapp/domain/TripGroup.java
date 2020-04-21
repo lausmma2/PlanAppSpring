@@ -38,11 +38,7 @@ public class TripGroup {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
-    /*@OneToMany(targetEntity=Trip.class,cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Trip> trips = new ArrayList<>();*/
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "tripGroup", orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "tripGroup", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
     public Set<User> getUsers() {

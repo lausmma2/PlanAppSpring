@@ -53,7 +53,7 @@ public class Trip {
     @JsonIgnore
     private User user;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "trip", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "trip", orphanRemoval = true)
     @JsonIgnore
     private List<Place> places = new ArrayList<>();
 
