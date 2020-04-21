@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @GetMapping("api/user/user-info")
+    @GetMapping("/user-info")
     public ResponseEntity<?> getCurrentsUserInfo(Principal principal){
         User user = userService.findUserByUsername(principal.getName());
         return new ResponseEntity<User>(user, HttpStatus.OK);
