@@ -38,7 +38,7 @@ public class TripGroup {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "tripGroup", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "tripGroup", orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
     public Set<User> getUsers() {
