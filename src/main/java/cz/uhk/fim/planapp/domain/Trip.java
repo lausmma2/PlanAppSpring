@@ -46,7 +46,7 @@ public class Trip {
     @Column(length = 6)
     private Integer kmCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TripGroup tripGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
