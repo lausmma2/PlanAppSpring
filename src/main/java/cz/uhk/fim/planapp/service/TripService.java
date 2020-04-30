@@ -61,8 +61,8 @@ public class TripService {
             throw new TripIdException("Trip ID: '" + tripIdentifier + "' does not exist!");
         }
 
-        if(!trip.getTripCreator().equals(username))
-            throw new TripNotFoundException("Trip not found in your account");
+        /*if(!trip.getTripCreator().equals(username))
+            throw new TripNotFoundException("Trip not found in your account");*/
 
         return trip;
     }
