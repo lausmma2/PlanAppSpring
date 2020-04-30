@@ -2,7 +2,7 @@ package cz.uhk.fim.planapp.security;
 
 public class SecurityConstants {
 
-    //public static final String SIGN_UP_URLS = "/**";
+    //Important constants used in security
     public static final String H2_URL = "h2-console/**";
     public static final String SECRET = "SecretKeyToGenJWTs";
     public static final String TOKEN_PREFIX = "Bearer ";

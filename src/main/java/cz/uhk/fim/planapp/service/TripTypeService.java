@@ -14,13 +14,6 @@ public class TripTypeService {
     public TripType findTripTypeByTripIdentifier(String tripTypeIdentifier){
         TripType tripType = tripTypeRepository.getTripTypeByTripTypeIdentifier(tripTypeIdentifier);
 
-        /*if(trip == null){
-            throw new TripIdException("Trip ID: '" + tripIdentifier + "' does not exist!");
-        }
-
-        if(!trip.getTripCreator().equals(username))
-            throw new TripNotFoundException("Project not found in your account");*/
-
         return tripType;
     }
 

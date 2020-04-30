@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Set;
 
+//Class to maintain all operations with trip groups
 @RestController
 @RequestMapping("/api/trip-group")
 @CrossOrigin
@@ -67,7 +68,7 @@ public class TripGroupController {
     }
 
     @DeleteMapping("/{tripGroupId}")
-    public ResponseEntity<?> deleteProject(@PathVariable String tripGroupId, Principal principal){
+    public ResponseEntity<?> deleteTrip(@PathVariable String tripGroupId, Principal principal){
         tripGroupService.deleteTripGroupByIdentifier(tripGroupId, principal.getName());
 
         return new ResponseEntity<String>("Trip Group with ID: '" + tripGroupId + "' was deleted", HttpStatus.OK);

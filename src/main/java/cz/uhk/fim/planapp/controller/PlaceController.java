@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 
+//Class maintaining all operations with places
 @RestController
 @RequestMapping("/api/place")
 @CrossOrigin

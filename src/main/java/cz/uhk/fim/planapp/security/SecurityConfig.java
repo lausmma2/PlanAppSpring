@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static cz.uhk.fim.planapp.security.SecurityConstants.H2_URL;
 
+//Security configuration
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -49,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    //CORS, CSRF, permitted pages, permitted types
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()

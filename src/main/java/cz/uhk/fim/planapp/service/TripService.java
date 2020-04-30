@@ -40,12 +40,10 @@ public class TripService {
             }
         }
         try{
-            // TODO: 03.02.2020 - Update nefunguje update_at... pořád null
             User user = userRepository.findByUsername(username);
             trip.setUser(user);
             trip.setTripCreator(user.getUsername());
             trip.setTripIdentifier(trip.getTripIdentifier().toUpperCase());
-            //trip.setTripGroup(trip.getTripGroup());
 
             return tripRepository.save(trip);
 
@@ -70,11 +68,6 @@ public class TripService {
     }
 
     public void deleteTripByIdentifier(String tripId, String username){
-        /*Trip trip = tripRepository.findTripByTripIdentifier(tripId.toUpperCase());
-
-        if(trip == null){
-            throw new TripIdException("Cannot delete trip with ID: '" + tripId + "'. This trip does not exist");
-        }*/
         tripRepository.delete(findTripByTripIdentifier(tripId, username));
     }
 
@@ -93,7 +86,7 @@ public class TripService {
 
         for(Iterator<TripGroup> tripGroupsSet = user.getTripGroups().iterator(); tripGroupsSet.hasNext(); ){
             TripGroup tripGroup1 = tripGroupsSet.next();
-            if(tripGroup1.equals(tripGroup) /*|| !tripGroup.getTripGroupCreator().equals(username)*/){
+            if(tripGroup1.equals(tripGroup)){
                 trips = tripRepository.findAllByTripGroup(tripGroup1);
             }
         }

@@ -4,12 +4,8 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+//Configuration of gmail... to confirm registration
 public class GoogleMail {
-
-    /*private static String USER_NAME = "lausman.marek";  // GMail user name (just the part before "@gmail.com")
-    private static String PASSWORD = "nzmlvheusumnjivq"; // GMail password
-
-    private static String RECIPIENT = "marek.lausman@gmail.com";*/
 
     public void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
         Properties props = System.getProperties();

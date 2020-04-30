@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 
+//Class to maintain all operations with trips
 @RestController
 @RequestMapping("/api/trip")
 @CrossOrigin
@@ -53,7 +54,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{tripId}")
-    public ResponseEntity<?> deleteProject(@PathVariable String tripId, Principal principal){
+    public ResponseEntity<?> deleteTrip(@PathVariable String tripId, Principal principal){
         tripService.deleteTripByIdentifier(tripId, principal.getName());
 
         return new ResponseEntity<String>("Trip with ID: '" + tripId + "' was deleted", HttpStatus.OK);

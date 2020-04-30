@@ -1,17 +1,10 @@
 package cz.uhk.fim.planapp.service;
 
 import cz.uhk.fim.planapp.domain.User;
-import cz.uhk.fim.planapp.dto.UserDto;
 import cz.uhk.fim.planapp.exceptions.FirstnameIsEmptyException;
-import cz.uhk.fim.planapp.exceptions.LastnameIsEmptyException;
 import cz.uhk.fim.planapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -24,7 +17,6 @@ public class UserService {
     }
 
     public User findUserByUsername(String username){
-        //Nejspíš není potřeba ošetřovat chyby...
         return userRepository.findByUsername(username);
     }
 
@@ -43,10 +35,4 @@ public class UserService {
 
         userRepository.save(userInDb);
     }
-
-    /*@Transactional
-    public List<UserDto> getAllUsers(){
-        List<UserDto> userDtos = new ArrayList<>();
-        return userDtos;
-    }*/
 }

@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static cz.uhk.fim.planapp.security.SecurityConstants.TOKEN_PREFIX;
 
+//All registration operations
 @RestController
 public class RegistrationController {
 
@@ -34,7 +35,6 @@ public class RegistrationController {
     @RequestMapping(value = "/confirm-account/{username}/{uuid}", method = RequestMethod.GET)
     public void confirmUser(@PathVariable String username,
                             @PathVariable String uuid){
-        //registerService.confirmUserByVisibleId(visibleId.toString());
         registerService.confirmUserByUsername(username);
         System.out.println("User has been confirmed :)");
     }
@@ -57,8 +57,7 @@ public class RegistrationController {
         googleMail.sendFromGMail(
                 "lausman.marek",
                 "nzmlvheusumnjivq", recipient,
-                "Registration confirmation - PlanApp",
-                "Click the link below to activate your account on PlanApp! :)" + "\n https://planapp-spring.herokuapp.com/confirm-account/" + user.getUsername() + "/" + uniqueID/*user.getVisibleId()*/
+                "Registration confirmation - PlanApp","Click the link below to activate your account on PlanApp! :)" + "\n https://planapp-spring.herokuapp.com/confirm-account/" + user.getUsername() + "/" + uniqueID/*user.getVisibleId()*/
         );
 
         User newUser = registerService.saveOrUpdateUser(user);

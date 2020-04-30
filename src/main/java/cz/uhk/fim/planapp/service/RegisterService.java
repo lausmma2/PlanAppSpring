@@ -26,12 +26,9 @@ public class RegisterService {
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
             newUser.setUsername(newUser.getUsername());
 
-            //Make sure that password and confirmPassword match
-            //We dont persist or show the confirmPassword
+            //Nobody needs to see confirm password in db
             newUser.setConfirmPassword("");
 
-            //generateUsersVisibleId(newUser);
-            //newUser.setConfirmed(true);
             setCreated_OnDate(newUser);
 
             return userRepository.save(newUser);
@@ -57,20 +54,7 @@ public class RegisterService {
     @Transactional
     public void confirmUserByUsername(String username){
         User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername());
         user.setConfirmed(true);
-
-        /*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-        LocalDateTime tomorrow = user.getCreated_On().plusHours(24);
-        dtf.format(tomorrow);
-        LocalDateTime now = LocalDateTime.now();
-
-        if(now.isBefore(tomorrow)){
-            user.setConfirmed(true);
-            System.out.println("registered! :)");
-        }else {
-            System.out.println("User cannot be registered!");
-        }*/
     }
 
     @Transactional

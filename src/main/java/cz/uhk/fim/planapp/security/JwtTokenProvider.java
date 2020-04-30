@@ -15,8 +15,7 @@ import static cz.uhk.fim.planapp.security.SecurityConstants.SECRET;
 @Component
 public class JwtTokenProvider {
 
-    //Generate the token
-
+    //Generating the token - storing id, username, firstname and lastname in the token
     public String generateToken(Authentication authentication){
         User user = (User)authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
@@ -40,7 +39,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    //Validate the token
+    //Token validation
     public boolean validateToken(String token){
         try{
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
@@ -59,7 +58,7 @@ public class JwtTokenProvider {
         return false;
     }
 
-    //Get user Id from token
+    //Getting userId from the Token
     public Long getUserIdFromJWT(String token){
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         String id = (String)claims.get("id");

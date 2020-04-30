@@ -11,9 +11,7 @@ import java.util.Set;
 public interface TripGroupRepository extends CrudRepository<TripGroup, Long> {
 
     TripGroup findTripGroupByTripGroupIdentifier(String tripGroupIdentifier);
-    Iterable<TripGroup> findAllByTripGroupCreator(String username);
     Iterable<TripGroup> getAllByUsers(Set<User> user);
-    TripGroup findTripGroupByTripGroupIdentifierAndUsers(String tripGroupIdentifier, User user);
 
     @Override
     void delete(TripGroup tripGroup);

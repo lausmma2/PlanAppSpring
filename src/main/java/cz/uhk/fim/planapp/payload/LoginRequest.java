@@ -2,6 +2,7 @@ package cz.uhk.fim.planapp.payload;
 
 import javax.validation.constraints.NotBlank;
 
+//Class that expresses login request from client from users
 public class LoginRequest {
 
     @NotBlank(message = "Username cannot be blank!")

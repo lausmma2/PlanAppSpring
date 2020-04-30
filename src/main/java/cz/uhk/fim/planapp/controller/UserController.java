@@ -1,32 +1,21 @@
 package cz.uhk.fim.planapp.controller;
 
 import cz.uhk.fim.planapp.domain.User;
-import cz.uhk.fim.planapp.dto.UserDto;
-        import cz.uhk.fim.planapp.service.UserService;
-import org.slf4j.LoggerFactory;
+import cz.uhk.fim.planapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.ws.rs.Path;
 import java.security.Principal;
-import java.util.List;
-import java.util.logging.Logger;
 
-@RestController //vrací JSON v metodách
+//Class maintaining all operations with user
+@RestController
 @CrossOrigin
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-    //private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("api/user/{visibleId}")
     public ResponseEntity<?> getUserByUserId(@PathVariable String visibleId, Principal principal){

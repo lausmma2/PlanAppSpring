@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//Authentication entry point... it will throw 401 - Unauthorized if credentials are wrong
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

@@ -58,7 +58,7 @@ public class PlaceService {
         //Find trip
         Trip trip = tripRepository.findTripByTripIdentifier(tripId);
 
-        //Check all places and if place is duplicated => delete them all
+        //Check all places and if place is duplicated => delete all the duplicate ones
         for (int i = 0; i < trip.getPlaces().size(); i++) {
             if(trip.getPlaces().get(i).getLatitude().equals(latitude)
                     && trip.getPlaces().get(i).getLongitude().equals(longitude)){

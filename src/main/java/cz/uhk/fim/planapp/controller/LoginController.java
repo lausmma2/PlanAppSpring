@@ -38,6 +38,7 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
+    //Class takes care of authentication and log user in
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
@@ -47,6 +48,8 @@ public class LoginController {
         try {
             String jwt = "";
             User user = userRepository.findByUsername(loginRequest.getUsername());
+
+            //User has to be confirmed in email, otherwise user won't be able to log in
             if (user.getConfirmed()) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
@@ -64,15 +67,5 @@ public class LoginController {
         }catch (Exception ex){
             throw new UserNotFoundException("Username or password is invalid! Or you haven't confirmed your account yet!");
         }
-
-        /*Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);*/
     }
 }
